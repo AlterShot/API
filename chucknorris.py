@@ -27,21 +27,17 @@ class ChuckNorrisJoke():
         user_category = input("enter a category for a joke from a list above: ").strip().lower()
 
         # Проверяем наличие категории
-        if user_category not in category_list:
-            print(f"\u274C\'{user_category}\' was not found. Try again.")
-            return
-
-        # Если категория есть, печатаем, что выбор успешен
+        assert user_category in category_list, f"\u274C\'{user_category}\' was not found. Try again."
         print(f"\n\u2705\"{user_category}\" category is in a list")
 
         # Создаем запрос и печатаем полученный адрес
         user_path = self.url + f"/jokes/random?category={user_category}"
         print(f"\n\U0001F50Dyour url: {user_path}")
 
-        # Делаем запрос на шутку и проверяем, нет ли проблем с API
+        # Делаем запрос на шутку и проверяем ее статус-код
         user_joke = requests.get(user_path)
-        if user_joke.status_code != 200:
-            print("some error during download")
+        assert user_joke.status_code == 200, "some error during download"
+        print("everything is fine")
 
         # Выводим шутку по запросу пользователя
         user_joke_text = user_joke.json()
