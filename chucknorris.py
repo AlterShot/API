@@ -7,38 +7,41 @@ class ChuckNorrisJoke():
     url = "https://api.chucknorris.io"
 
     # Создаем метод
-    def specific_joke(self):
-        # Создаем переменные с категорией и url, печатаем общий url
-        joke_category = "travel"
-        type_path = f"/jokes/random?category={joke_category}"
-        joke_path = self.url + type_path
-        print(joke_path)
+    def specific_joke(self) -> None:
+        # Создаем переменную с путем для всех категорий
+        category_list_path = "/jokes/categories"
+        category_url = self.url + category_list_path
 
-        # Обращаемся к API и выводим данные
-        joke_show = requests.get(joke_path)
-        joke_show_result = joke_show.json()
-        print(joke_show_result)
+        # Печатаем путь
+        print(category_url)
 
-        # Проверяем статус-код ответа
-        print(f"status code: {joke_show.status_code}")
-        assert joke_show.status_code == 200, "status code wrong"
-        print("status code correct")
+        # Собираем все категории и выводим их
+        category_list = requests.get(category_url).json()
+        print(f"all categories: {category_list}")
 
-        # Проверяем корректность категории
-        check_joke_category = joke_show_result.get('categories')
-        assert joke_category in check_joke_category, "category wrong"
-        print("category correct")
+        # Проходимся по списку полученных категорий
+        for category in category_list:
 
-        # Печатаем только саму шутку
-        joke_only = joke_show_result.get('value')
-        print(joke_only)
+            # Подставляем значения в url для запроса get
+            many_jokes_path = f"/jokes/random?category={category}"
+            many_jokes_url = self.url + many_jokes_path
 
-        # Проверяем наличие слова в шутке
-        name = "Chuck"
-        if name in joke_only:
-            print("joke correct")
-        else:
-            print("joke wrong")
+            # Печатаем полученные url
+            print(many_jokes_url)
+
+            # Выводим на печать то, что получилось
+            show_jokes = requests.get(many_jokes_url)
+            result = show_jokes.json()
+            print(result)
+
+            # Проверяем статус-код для каждой шутки
+            print(f"status code: {show_jokes.status_code}")
+            assert show_jokes.status_code == 200, "status code wrong"
+            print("status code correct")
+
+            # Выводим каждую шутку отдельно
+            joke_only = result.get("value")
+            print(joke_only)
 
 
 # Создаем экземпляр класса и вызываем метод
