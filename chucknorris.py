@@ -13,42 +13,40 @@ class ChuckNorrisJoke():
         category_url = self.url + category_list_path
 
         # Печатаем путь
-        print("\n----" * 2)
+        print("\n----")
         print(f"\U0001F517path to categories: {category_url}")
-        print("\n----" * 2)
 
         # Собираем все категории и выводим их
         category_list = requests.get(category_url).json()
-        print("\n----" * 2)
+        print("\n----")
         print(f"\U0001F4DAall categories: ")
         for category in category_list:
             print(f" - {category}")
-        print("\n----" * 2)
 
-        # Проходимся по списку полученных категорий
-        for category in category_list:
-            print("\n----" * 2)
-            # Подставляем значения в url для запроса get
-            many_jokes_path = f"/jokes/random?category={category}"
-            many_jokes_url = self.url + many_jokes_path
+        # Просим пользователя ввести категорию
+        user_category = input("enter a category for a joke from a list above: ").strip().lower()
 
-            # Печатаем полученные url
-            print(f"\n\U0001F50Dpath to current joke: {many_jokes_url}")
+        # Проверяем наличие категории
+        if user_category not in category_list:
+            print(f"\u274C\'{user_category}\' was not found. Try again.")
+            return
 
-            # Выводим на печать то, что получилось
-            show_jokes = requests.get(many_jokes_url)
-            result = show_jokes.json()
-            print(f"\n\U0001F4E6full json info: {result}")
+        # Если категория есть, печатаем, что выбор успешен
+        print(f"\n\u2705\"{user_category}\" category is in a list")
 
-            # Проверяем статус-код для каждой шутки
-            print(f"\n\u26A0current path status code: {show_jokes.status_code}")
-            assert show_jokes.status_code == 200, "\u274Cstatus code wrong"
-            print("\n\u2705status code check correct")
+        # Создаем запрос и печатаем полученный адрес
+        user_path = self.url + f"/jokes/random?category={user_category}"
+        print(f"\n\U0001F50Dyour url: {user_path}")
 
-            # Выводим каждую шутку отдельно
-            joke_only = result.get("value")
-            print(f"\n\U0001F602and the joke by itself is: {joke_only}")
-            print("\n----" * 2)
+        # Делаем запрос на шутку и проверяем, нет ли проблем с API
+        user_joke = requests.get(user_path)
+        if user_joke.status_code != 200:
+            print("some error during download")
+
+        # Выводим шутку по запросу пользователя
+        user_joke_text = user_joke.json()
+        just_joke = user_joke_text.get('value')
+        print(f"\n\U0001F602here is your joke: {just_joke}")
 
 
 # Создаем экземпляр класса и вызываем метод
