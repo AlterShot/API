@@ -60,16 +60,18 @@ class MapsPostNGet():
 
         # Делаем запрос PUT
         put_process = requests.put(put_url, json=new_location_description)
-        print(put_process)
         put_process_json = put_process.json()
+        print(put_process_json)
 
         # Проверяем и печатаем статус-код запроса
         print(f"PUT status code: {put_process.status_code}")
         assert put_process.status_code == 200, "wrong PUT status code"
         print("PUT status code correct")
 
-        # Печатаем новый адрес
-        print(f"new address: {put_process_json.get('address')}")
+        # Проверяем сообщение, выводимое при запросе
+        msg = put_process_json.get('msg')
+        assert msg == "Address successfully updated", f"Expected message 'Address successfully updated', but got {msg}"
+        print(f"Message correct")
 
     # Создаем метод для чтения и метода GET
     def get(self) -> None:
@@ -80,7 +82,7 @@ class MapsPostNGet():
         # Делаем запрос GET
         get_process = requests.get(get_url)
         get_process_json = get_process.json()
-        print(get_process)
+        print(get_process_json)
 
         # Проверяем и печатаем статус-код запроса
         print(f"GET status code: {get_process.status_code}")
