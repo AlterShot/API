@@ -1,17 +1,20 @@
+# Импортируем библиотеку
 import pytest
 
-
+# Не используем созданную фикстуру
 @pytest.fixture
-def initial_step():
+def initial_step() -> tuple[str, str]:
     print("Вход в систему выполнен")
-    sender = "example1@test.ru"
-    receiver = "example2@test.ru"
+    sender = "example_sender@test.ru"
+    receiver = "example_receiver@test.ru"
     return sender, receiver
 
-def test_sender():
-    sender = "example1@test.ru"
+# Создаем первый метод с переменной без фикстуры
+def test_sender() -> None:
+    sender = "example_sender@test.ru"
     print(f"Письмо отправил {sender}")
 
-def test_receiver():
-    receiver = "example2@test.ru"
+# Создаем второй метод с переменной без фикстуры
+def test_receiver() -> None:
+    receiver = "example_receiver@test.ru"
     print(f"Письмо получил {receiver}")
