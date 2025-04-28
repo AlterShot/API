@@ -3,11 +3,16 @@ import pytest
 
 # Создаем фикстуру с переменными
 @pytest.fixture
-def initial_step() -> tuple[str, str]:
+def initial_step():
     print("Вход в систему выполнен")
     sender = "example_sender@test.ru"
     receiver = "example_receiver@test.ru"
-    return sender, receiver
+
+    # Вводим команду yield для возвращения значений
+    yield sender, receiver
+
+    # Создаем принт, который будет выполняться после методов
+    print("Выход из системы выполнен")
 
 # Создаем первый метод с фикстурой
 def test_sender(initial_step) -> None:

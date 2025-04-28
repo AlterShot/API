@@ -3,11 +3,10 @@ import pytest
 
 # Не используем созданную фикстуру
 @pytest.fixture
-def initial_step() -> tuple[str, str]:
+def initial_step():
     print("Вход в систему выполнен")
-    sender = "example_sender@test.ru"
-    receiver = "example_receiver@test.ru"
-    return sender, receiver
+    yield
+    print("Выход из системы выполнен")
 
 # Создаем первый метод с переменной без фикстуры
 def test_sender() -> None:
