@@ -1,19 +1,9 @@
-# Импортируем библиотеку
-import pytest
-
-# Не используем созданную фикстуру
-@pytest.fixture
-def initial_step():
-    print("Вход в систему выполнен")
-    yield
-    print("Выход из системы выполнен")
-
-# Создаем первый метод с переменной без фикстуры
-def test_sender() -> None:
-    sender = "example_sender@test.ru"
+# Создаем первый метод с фикстурой по функции
+def test_sender(initial_step, function_scope_1) -> None:
+    sender = initial_step[0]
     print(f"Письмо отправил {sender}")
 
-# Создаем второй метод с переменной без фикстуры
-def test_receiver() -> None:
-    receiver = "example_receiver@test.ru"
+# Создаем второй метод с фикстурой по функции
+def test_receiver(initial_step, function_scope_2) -> None:
+    receiver = initial_step[1]
     print(f"Письмо получил {receiver}")
